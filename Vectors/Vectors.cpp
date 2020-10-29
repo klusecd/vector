@@ -7,6 +7,8 @@ private:
 	T* data;
 	size_t size;
 	size_t capacity;
+
+
 public:
 	Vector()
 	{
@@ -42,7 +44,6 @@ public:
 	}
 
 	Vector(const Vector& v) {
-		delete[]data;
 		size = v.size;
 		capacity = v.capacity;
 		T* data = new T[size];
@@ -89,28 +90,25 @@ public:
 
 	void insert(T Elem, int index)
 	{
-		T* a = new T[size + 1];
-		unsigned int i;
-		for (int i = 0; i < index; i++)
-			a[i] = data[i];
-		a[index] = Elem;
-		for (i = index; i < size; i++)
-			a[i + 1] = data[i];
-		if (data != nullptr)
-			delete[] data;
-		data = a;
+		push_back(data[size - 1]);
+		for (int i = size - 1; i > index; i--)
+			data[i] = data[i - 1];
+		data[index] = elem;
 	}
 
 	void erase(int index)
 	{
-		T* a = new T[capacity];
-		for (int i = 0; i < index - 1; i++)
-			a[i] = data[i];
-		for (int i = index - 1; i < size; i++)
-			a[i] = data[i + 1];
-		delete[]data;
-		data = a;
+		for (int i = index; i < size; i++)
+			data[i] = data[i + 1];
 		size--;
+	}
+
+	void push_front(T elem) { 
+		insert(elem, 0);
+	}
+
+	void pop_front() { 
+		erase(0);
 	}
 
 	T& operator[](int index)
